@@ -1,0 +1,6 @@
+Sales
+Production
+Design
+Shipping
+Marketing 
+
