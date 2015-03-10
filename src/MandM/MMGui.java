@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package MandM;
 
 import java.awt.print.PrinterException;
@@ -10,22 +6,39 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import java.util.regex.Matcher;
 
 /**
+ *************************************************************
+ *Comments by prof.
  *
- * @author vikashloomba
+ *************************************************************
+ * File name:   MMGui.java
+ * @author:     Vikash Loomba
+ * @version:    1.1
+ * Platform:    PC, Windows XP, Netbeans 8.02, jdk 8
+ *************************************************************
+ * <b>
+ * This program calculates the pay amount for an employee at
+ * M and M. Options are provided to determine the employees
+ * deductions, and the final amount is calculated after taxes
+ * have been applied.
+ * </b>
+ *************************************************************
+ * Input:   Employee's names from Employees.txt
+ * Output:  Pay amount for individual employee.
+ *************************************************************
+ * Comments by student
+ *
+ *************************************************************
  */
 public class MMGui extends javax.swing.JFrame {
-
+    //Class instance variables
     StringBuffer display = new StringBuffer();
     List<String> names = new ArrayList<String>();
     List<String> nameChanges = new ArrayList<String>();
@@ -34,7 +47,7 @@ public class MMGui extends javax.swing.JFrame {
     NumberFormat dollars = NumberFormat.getCurrencyInstance();
     double total;
     /**
-     * Creates new form MMGui
+     * Default constructor--creates new form MMGui
      */
     public MMGui() 
     {
@@ -48,7 +61,8 @@ public class MMGui extends javax.swing.JFrame {
         
     }
     /**
-     * Reads Departments.txt and appends to box
+     * Reads Departments.txt and appends departments
+     * to combo box.
      */
     private void populateDepartmentBox() 
     {
@@ -84,7 +98,8 @@ public class MMGui extends javax.swing.JFrame {
         }
     }
     /**
-     * Reads Employees.txt and appends to box
+     * Reads Employees.txt and appends to
+     * combo box.
      */    
     private void populateNameBox() 
     {
@@ -447,7 +462,7 @@ public class MMGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void totaljButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totaljButtonActionPerformed
-        // TODO add your handling code here:
+        // Displays the total amount on the jTextArea.
         String totalAmount = dollars.format(total);
         outjTextArea.append("-------------------------------------------------------------------------------------------\n");        
         outjTextArea.append(padSpaces("Total", "", "", totalAmount + '\n').toString());
@@ -456,7 +471,7 @@ public class MMGui extends javax.swing.JFrame {
     }//GEN-LAST:event_totaljButtonActionPerformed
 
     private void printjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printjButtonActionPerformed
-
+        //Prints the output.
         try {
             outjTextArea.print();
         } 
@@ -466,7 +481,7 @@ public class MMGui extends javax.swing.JFrame {
     }//GEN-LAST:event_printjButtonActionPerformed
 
     private void clearjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearjButtonActionPerformed
-        // TODO add your handling code here:
+        // Resets the form.
         namejComboBox.removeAllItems();
         populateNameBox();
         display.setLength(0);
@@ -479,12 +494,12 @@ public class MMGui extends javax.swing.JFrame {
     }//GEN-LAST:event_clearjButtonActionPerformed
 
     private void addjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addjButtonActionPerformed
-
+        //Adds employee information to the jTextArea.
         
         //First check each field for the information that will be passed to payroll class
         String name = namejComboBox.getSelectedItem().toString();
         String depName = departmentjComboBox.getSelectedItem().toString();
-        
+        //Input check.
         if (hoursjFormattedTextField.getText().isEmpty() || 
                 Double.parseDouble(hoursjFormattedTextField.getText()) > 168 ||
                 Double.parseDouble(hoursjFormattedTextField.getText()) < 0)
@@ -528,7 +543,7 @@ public class MMGui extends javax.swing.JFrame {
     }//GEN-LAST:event_quitjButtonActionPerformed
 
     private void searchjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchjButtonActionPerformed
-        // TODO add your handling code here:
+        // Searches employees with custom method (see below)
         String empName = JOptionPane.showInputDialog("Please enter the name of the employee you want to search");
         if (empName.matches(""))
         {
@@ -646,7 +661,15 @@ public class MMGui extends javax.swing.JFrame {
     private javax.swing.JButton totaljButton;
     private javax.swing.JMenuItem totaljMenuItem;
     // End of variables declaration//GEN-END:variables
-    //displays the output
+    /**
+     * Description: Adds the employees information to a 
+     *              list that will then be output in the
+     *              outjTextArea.
+     * @param name Employee name
+     * @param departmentName Department Name
+     * @param hour Hours worked
+     * @param totalPay Total pay after calculations
+     */ 
     public void displayOut(String name, String departmentName, double hour, String totalPay)
     {        
         String hours = Double.toString(hour);
@@ -660,8 +683,10 @@ public class MMGui extends javax.swing.JFrame {
        
         //Get index to cross reference names
         namePos = namejComboBox.getSelectedIndex();
+        
         //Gets the selected name to compare
         selectedName = namejComboBox.getItemAt(namePos).toString();
+        
         //If the name has already been added to the outjTextArea, execute.
         if (!nameChanges.contains(selectedName))
         {
@@ -672,24 +697,15 @@ public class MMGui extends javax.swing.JFrame {
             
             lines.add(indexStart - 1, padSpaces(name, departmentName, hours, totalPay + '\n').toString());
             output = arrayToString(lines);
-//            output = lines.toString()
-//                .replace(", ", "")
-//                .replace("[", "")
-//                .replace("]", "")
-//                .trim();
+
             JOptionPane.showMessageDialog(null, "The information has been updated.");
         }
-        //Else if the name has not been added to the text area
+        //Else if the name has not been added to the text area, add the information given.
         else
         {
             addLine = padSpaces(name, departmentName, hours, totalPay + '\n').toString();
             lines.add(addLine);
             output = arrayToString(lines);
-//          output = lines.toString()            
-//                .replace(", ", "")
-//                .replace("[", "")
-//                .replace("]", "")
-//                .trim();
         }
             
             //Sets the header
@@ -699,7 +715,10 @@ public class MMGui extends javax.swing.JFrame {
     }
     
     
-    //Pads the spacing    
+    /**
+     * Pads the spacing for information appended to the
+     * combo box.
+     */    
     private StringBuffer padSpaces(String name, String departmentName, String hours, String netPay)
         {
             final int MAX_LENGTH = 93;
@@ -729,21 +748,31 @@ public class MMGui extends javax.swing.JFrame {
             return line;
         }
 
-    
+    /**
+     * Compares the name searched to the current employees
+     * in the jComboBox. Gives you option to add the employee
+     * if they are not currently added.
+     */ 
     private void compareName(String empName) 
     {
-        int nameCount = 0;
-        String newEmployee;
-        nameCount = names.size();
+        String searchEmp = "";
+        int nameCount = names.size();
+        boolean matchExists = false;
         for(int i = 0; i < nameCount; i++)
         {
-            if (names.contains(empName))
+            if (names.get(i).contains(empName))
             {
-                namejComboBox.setSelectedItem(empName);
-                JOptionPane.showMessageDialog(null, empName + " has been selected");                
+                searchEmp = names.get(i);
+                matchExists = true;
                 break;
             }
-            else
+        }
+        if (matchExists)
+        {
+            namejComboBox.setSelectedItem(searchEmp);
+            JOptionPane.showMessageDialog(null, searchEmp + " has been selected");
+        } 
+        else
             {
                 int addName = JOptionPane.showConfirmDialog(null, empName + " could not be found, would you like to add them?");
                 if (addName == JOptionPane.YES_OPTION)
@@ -753,17 +782,14 @@ public class MMGui extends javax.swing.JFrame {
                     nameChanges.add(empName);
                     JOptionPane.showMessageDialog(null, empName + " has been added.");
                     namejComboBox.setSelectedItem(empName);
-                }
-                else
-                {
-                    searchjButton.doClick();
-                }
-                
-                break;
-            }
-        }
+                }  
+            }           
+        
     }
-
+    /**
+     * Converts array containing the strings
+     * to be output to a readable format.
+     */ 
     private String arrayToString(List<String> lines)
     {
         String output = lines.toString()
