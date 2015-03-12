@@ -8,8 +8,26 @@ package MandM;
 import javax.swing.JOptionPane;
 
 /**
+ *************************************************************
+ *Comments by prof.
  *
- * @author vikashloomba
+ *************************************************************
+ * File name:   Payroll.java
+ * @author:     Vikash Loomba
+ * @version:    1.1
+ * Platform:    PC, Windows XP, Netbeans 8.02, jdk 8
+ *************************************************************
+ * <b>
+ * This class calculates the pay amount for an employee at
+ * M and M. All inputs are taken from MMGui.java.
+ * </b>
+ *************************************************************
+ * Input:   Employee's departments, dependents, and hours.
+ * Output:  Pay amount for individual employee.
+ *************************************************************
+ * Comments by student
+ * See MMGui.java
+ *************************************************************
  */
 public class Payroll {
     
@@ -25,21 +43,27 @@ public class Payroll {
     double hours;
     int departmentCode,
             departmentHourly = 0;
-    
+    /**
+     * Default constructor
+     */
     public Payroll()
     {
         dependents = 0;
         hours = 0;
         departmentCode = '\u0000';       
     }
-    
+    /**
+     * Overloaded constructor
+     */
     public Payroll(int dep, double hrs, int dC)
     {
         dependents = dep;
         hours = hrs;
         departmentCode = dC;
     }
-    
+    /**
+     * Selects appropriate department of employee.
+     */
     public static double getDepartmentHourly(int departmentCode)
     {
         double departmentHourly;        
@@ -61,7 +85,10 @@ public class Payroll {
         }
         return departmentHourly;
     }
-    
+    /**
+     * Calculates pay based of department, and determines whether
+     * overtime was worked or not. 
+     */
     public double getTotalPay(double departmentHourly)
     {
         double totalPay = 0000.00;

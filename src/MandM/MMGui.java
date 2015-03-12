@@ -676,7 +676,7 @@ public class MMGui extends javax.swing.JFrame {
         int namePos;
         String selectedName;
         String addLine;
-        String output = null;
+        String output = "";
         List<String> lines = outLines;
         String header = padSpaces("Employee", "Department", "Hours", "Net Pay" + '\n').toString() + "--------------------------------------------------------------------------------------------\n";
         //Checks whether the employee has already been added
@@ -687,18 +687,41 @@ public class MMGui extends javax.swing.JFrame {
         //Gets the selected name to compare
         selectedName = namejComboBox.getItemAt(namePos).toString();
         
-        //If the name has already been added to the outjTextArea, execute.
+        //If the nameChanges list does not contain the name, it has already been added.
         if (!nameChanges.contains(selectedName))
         {
-            int indexStart = Integer.parseInt(JOptionPane.showInputDialog(null, name + " has already been added below. If you would like to edit\n"
-                    + " this employees information, please input the line their information\n is printed on (Do not"
-                    + " include header!)."));
-            lines.remove(indexStart - 1);
-            
-            lines.add(indexStart - 1, padSpaces(name, departmentName, hours, totalPay + '\n').toString());
-            output = arrayToString(lines);
-
-            JOptionPane.showMessageDialog(null, "The information has been updated.");
+            //Iterate through each line and check if it contains the name
+            for (int i = 0; i < lines.size(); i++)
+            {
+                
+                if (lines.get(i).contains(selectedName))
+                {
+                    int addName = JOptionPane.showConfirmDialog(null, selectedName + " has already been added below. Would you like to update"
+                            + " their information?");
+                        if (addName == JOptionPane.YES_OPTION)
+                        {
+                            int lineToReplace = i;
+                            lines.remove(lineToReplace);
+                            lines.add(lineToReplace, padSpaces(name, departmentName, hours, totalPay + '\n').toString());
+                            output = arrayToString(lines);
+                            JOptionPane.showMessageDialog(null, "The information has been updated.");
+                            break;
+                        }
+                        else if (addName == JOptionPane.NO_OPTION)
+                        {
+                            JOptionPane.showMessageDialog(null, "The information will not be updated.");
+                            output = arrayToString(lines);
+                            break;
+                        }
+                        else if (addName == JOptionPane.CANCEL_OPTION)
+                        {
+                            JOptionPane.showMessageDialog(null, "The information will not be updated.");
+                            output = arrayToString(lines);
+                            break;
+                        }
+                    
+                }
+            }
         }
         //Else if the name has not been added to the text area, add the information given.
         else
@@ -750,7 +773,8 @@ public class MMGui extends javax.swing.JFrame {
 
     /**
      * Compares the name searched to the current employees
-     * in the jComboBox. Gives you option to add the employee
+     * in the jComboBox. 
+     * Gives you option to add the employee
      * if they are not currently added.
      */ 
     private void compareName(String empName) 
@@ -782,8 +806,13 @@ public class MMGui extends javax.swing.JFrame {
                     nameChanges.add(empName);
                     JOptionPane.showMessageDialog(null, empName + " has been added.");
                     namejComboBox.setSelectedItem(empName);
-                }  
-            }           
+                }
+                else
+                {
+                    addName = JOptionPane.CANCEL_OPTION;
+                }
+            }
+                       
         
     }
     /**
